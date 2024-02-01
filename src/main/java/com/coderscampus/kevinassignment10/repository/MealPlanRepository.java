@@ -1,27 +1,31 @@
 package com.coderscampus.kevinassignment10.repository;
 import com.coderscampus.kevinassignment10.dto.DayResponse;
 import com.coderscampus.kevinassignment10.dto.WeekResponse;
+import com.coderscampus.kevinassignment10.service.SpoonacularApiService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class MealPlanRepository {
 
+    @Autowired
+    private SpoonacularApiService spoonacularApiService;
+
     private WeekResponse weekResponse;
     private DayResponse dayResponse;
 
-    public WeekResponse getWeekResponse() {
-        return weekResponse;
+    public ResponseEntity<WeekResponse> getWeekResponse(String targetCalories,
+                                                        String diet,
+                                                        String exclude) {
+        weekResponse = spoonacularApiService.getWeekMeals(targetCalories, diet, exclude);
+        return ResponseEntity.ok(weekResponse);
     }
 
-    public void setWeekResponse(WeekResponse weekResponse) {
-        this.weekResponse = weekResponse;
-    }
-
-    public DayResponse getDayResponse() {
-        return dayResponse;
-    }
-
-    public void setDayResponse(DayResponse dayResponse) {
-        this.dayResponse = dayResponse;
+    public ResponseEntity<DayResponse> getDayResponse(String targetCalories,
+                               String diet,
+                               String exclude) {
+        dayResponse = spoonacularApiService.getDayMeals(targetCalories, diet, exclude);
+        return ResponseEntity.ok(dayResponse);
     }
 }

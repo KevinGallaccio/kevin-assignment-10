@@ -22,25 +22,25 @@ public class SpoonacularApiService {
     @Autowired
     private String mealPlanEndpoint;
 
-    public WeekResponse getWeekMeals(String numCalories, String diet, String exclusions) {
-        String apiUrl = buildApiUrl("week", numCalories, diet, exclusions);
+    public WeekResponse getWeekMeals(String targetCalories, String diet, String exclude) {
+        String apiUrl = buildApiUrl("week", targetCalories, diet, exclude);
         return restTemplate.getForObject(apiUrl, WeekResponse.class);
     }
 
-    public DayResponse getDayMeals(String numCalories, String diet, String exclusions) {
-        String apiUrl = buildApiUrl("day", numCalories, diet, exclusions);
+    public DayResponse getDayMeals(String targetCalories, String diet, String exclude) {
+        String apiUrl = buildApiUrl("day", targetCalories, diet, exclude);
         return restTemplate.getForObject(apiUrl, DayResponse.class);
     }
 
-    private String buildApiUrl(String timeFrame, String numCalories, String diet, String exclusions) {
+    private String buildApiUrl(String timeFrame, String targetCalories, String diet, String exclude) {
         if (spoonacularBaseUrl == null || mealPlanEndpoint == null || apiKey == null) {
             throw new IllegalArgumentException("One or more required properties are null");
         }
         return UriComponentsBuilder.fromHttpUrl(spoonacularBaseUrl + mealPlanEndpoint)
                 .queryParam("timeFrame", timeFrame)
-                .queryParam("numCalories", numCalories)
+                .queryParam("targetCalories", targetCalories)
                 .queryParam("diet", diet)
-                .queryParam("exclusions", exclusions)
+                .queryParam("exclude", exclude)
                 .queryParam("apiKey", apiKey)
                 .build()
                 .toUriString();

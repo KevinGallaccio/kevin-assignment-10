@@ -15,27 +15,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class MealPlansController {
 
     @Autowired
-    SpoonacularApiService spoonacularApiService;
-    @Autowired
     MealPlanRepository mealPlanRepository;
 
     @GetMapping("/week")
 
-    public ResponseEntity<WeekResponse> getWeekMeals(String numCalories,
+    public ResponseEntity<WeekResponse> getWeekMeals(String targetCalories,
                                                      String diet,
-                                                     String exclusions){
-        WeekResponse weekResponse = spoonacularApiService.getWeekMeals(numCalories, diet, exclusions);
-        mealPlanRepository.setWeekResponse(weekResponse);
-        return ResponseEntity.ok(weekResponse);
+                                                     String exclude){
+        return mealPlanRepository.getWeekResponse(targetCalories, diet, exclude);
     }
 
     @GetMapping("/day")
 
-    public ResponseEntity<DayResponse> getDayMeals(String numCalories,
+    public ResponseEntity<DayResponse> getDayMeals(String targetCalories,
                                                    String diet,
-                                                   String exclusions){
-        DayResponse dayResponse = spoonacularApiService.getDayMeals(numCalories, diet, exclusions);
-        mealPlanRepository.setDayResponse(dayResponse);
-        return ResponseEntity.ok(dayResponse);
+                                                   String exclude){
+        return mealPlanRepository.getDayResponse(targetCalories, diet, exclude);
     }
 }
