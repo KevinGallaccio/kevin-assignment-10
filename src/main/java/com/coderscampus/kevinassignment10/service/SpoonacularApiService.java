@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Optional;
+
 @Service
 public class SpoonacularApiService {
 
@@ -38,9 +40,9 @@ public class SpoonacularApiService {
         }
         return UriComponentsBuilder.fromHttpUrl(spoonacularBaseUrl + mealPlanEndpoint)
                 .queryParam("timeFrame", timeFrame)
-                .queryParam("targetCalories", targetCalories)
-                .queryParam("diet", diet)
-                .queryParam("exclude", exclude)
+                .queryParamIfPresent("targetCalories", Optional.ofNullable(targetCalories))
+                .queryParamIfPresent("diet", Optional.ofNullable(diet))
+                .queryParamIfPresent("exclude", Optional.ofNullable(exclude))
                 .queryParam("apiKey", apiKey)
                 .build()
                 .toUriString();
